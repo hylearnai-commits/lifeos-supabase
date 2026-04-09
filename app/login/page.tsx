@@ -7,6 +7,7 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { EnvSetupCard } from "../components/env-setup-card";
+import { Card, CardHeader, CardBody, Input, Button, Tabs, Tab } from "../components/nextui";
 
 type LoginPageProps = {
   searchParams: Promise<{ message?: string }>;
@@ -29,81 +30,94 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const { message } = await searchParams;
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-6">
-      <section className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
-        <h1 className="text-2xl font-semibold text-zinc-900">LifeOS 登录</h1>
-        <p className="mt-2 text-sm text-zinc-600">
-          使用邮箱+密码登录你的个人工作生活面板
-        </p>
-        <p className="mt-2 text-xs text-zinc-500">
-          首次使用请先注册，再到邮箱完成验证；验证后再用邮箱密码登录
-        </p>
-        <form action={signInWithPassword} className="mt-6 space-y-4">
-          <input
-            required
-            name="email"
-            type="email"
-            placeholder="you@example.com"
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500"
-          />
-          <input
-            required
-            name="password"
-            type="password"
-            placeholder="请输入密码（至少 6 位）"
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500"
-          />
-          <button
-            type="submit"
-            className="w-full rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-700"
-          >
-            邮箱密码登录
-          </button>
-        </form>
-        <form action={signUpWithPassword} className="mt-3 space-y-4">
-          <input
-            required
-            name="email"
-            type="email"
-            placeholder="you@example.com"
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500"
-          />
-          <input
-            required
-            name="password"
-            type="password"
-            placeholder="请输入密码（至少 6 位）"
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500"
-          />
-          <button
-            type="submit"
-            className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-900 transition hover:border-zinc-500"
-          >
-            注册新账号
-          </button>
-        </form>
-        <div className="my-4 text-center text-xs text-zinc-400">或继续使用</div>
-        <form action={signInWithMagicLink} className="space-y-3">
-          <input
-            required
-            name="email"
-            type="email"
-            placeholder="you@example.com"
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500"
-          />
-          <button
-            type="submit"
-            className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-900 transition hover:border-zinc-500"
-          >
-            发送 Magic Link
-          </button>
-        </form>
-        {message ? (
-          <p className="mt-4 rounded-lg bg-zinc-100 px-3 py-2 text-sm text-zinc-700">
-            {message}
+    <main className="flex min-h-screen w-full items-center justify-center bg-background px-6">
+      <Card className="w-full max-w-md p-4 shadow-xl">
+        <CardHeader className="flex flex-col items-center justify-center gap-1 pb-2">
+          <h1 className="text-2xl font-bold">LifeOS</h1>
+          <p className="text-small text-default-500">
+            登录你的个人工作生活面板
           </p>
-        ) : null}
-      </section>
+        </CardHeader>
+        <CardBody className="gap-4">
+          {message && (
+            <div className="rounded-lg bg-danger-50 p-3 text-small text-danger">
+              {message}
+            </div>
+          )}
+
+          <Tabs fullWidth size="md" aria-label="Tabs form">
+            <Tab key="login" title="登录">
+              <form action={signInWithPassword} className="flex flex-col gap-4 pt-4">
+                <Input
+                  isRequired
+                  name="email"
+                  type="email"
+                  label="邮箱"
+                  placeholder="you@example.com"
+                  variant="bordered"
+                />
+                <Input
+                  isRequired
+                  name="password"
+                  type="password"
+                  label="密码"
+                  placeholder="请输入密码"
+                  variant="bordered"
+                />
+                <Button type="submit" color="primary" fullWidth className="mt-2 font-medium">
+                  登录
+                </Button>
+              </form>
+            </Tab>
+            
+            <Tab key="sign-up" title="注册">
+              <form action={signUpWithPassword} className="flex flex-col gap-4 pt-4">
+                <p className="text-xs text-default-500 text-center mb-2">
+                  首次使用请先注册，注册后前往邮箱完成验证。
+                </p>
+                <Input
+                  isRequired
+                  name="email"
+                  type="email"
+                  label="邮箱"
+                  placeholder="you@example.com"
+                  variant="bordered"
+                />
+                <Input
+                  isRequired
+                  name="password"
+                  type="password"
+                  label="密码"
+                  placeholder="至少 6 位密码"
+                  variant="bordered"
+                />
+                <Button type="submit" color="secondary" fullWidth className="mt-2 font-medium">
+                  注册新账号
+                </Button>
+              </form>
+            </Tab>
+
+            <Tab key="magic-link" title="Magic Link">
+              <form action={signInWithMagicLink} className="flex flex-col gap-4 pt-4">
+                <p className="text-xs text-default-500 text-center mb-2">
+                  无需密码，通过邮箱验证链接快速登录。
+                </p>
+                <Input
+                  isRequired
+                  name="email"
+                  type="email"
+                  label="邮箱"
+                  placeholder="you@example.com"
+                  variant="bordered"
+                />
+                <Button type="submit" variant="flat" color="default" fullWidth className="mt-2 font-medium">
+                  发送 Magic Link
+                </Button>
+              </form>
+            </Tab>
+          </Tabs>
+        </CardBody>
+      </Card>
     </main>
   );
 }
