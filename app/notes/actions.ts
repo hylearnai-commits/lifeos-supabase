@@ -22,14 +22,19 @@ export async function addNote(formData: FormData) {
     redirect("/login");
   }
 
-  await supabase.from("notes").insert({
+  const { error } = await supabase.from("notes").insert({
     user_id: user.id,
     title,
     content,
     type,
   });
 
+  if (error) {
+    redirect(`/notes?message=${encodeURIComponent(`保存记录失败：${error.message}`)}`);
+  }
+
   revalidatePath("/notes");
+  redirect(`/notes?message=${encodeURIComponent("记录已保存")}`);
 }
 
 export async function deleteNote(formData: FormData) {
@@ -48,8 +53,13 @@ export async function deleteNote(formData: FormData) {
     redirect("/login");
   }
 
-  await supabase.from("notes").delete().eq("id", id).eq("user_id", user.id);
+  const { error } = await supabase.from("notes").delete().eq("id", id).eq("user_id", user.id);
+
+  if (error) {
+    redirect(`/notes?message=${encodeURIComponent(`删除记录失败：${error.message}`)}`);
+  }
 
   revalidatePath("/notes");
   revalidatePath("/");
+  redirect(`/notes?message=${encodeURIComponent("记录已删除")}`);
 }

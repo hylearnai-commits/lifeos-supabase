@@ -6,7 +6,11 @@ import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { EnvSetupCard } from "../components/env-setup-card";
 import { Card, CardHeader, CardBody, Button, Input, Textarea, Chip } from "../components/nextui";
 
-export default async function NotesPage() {
+type NotesPageProps = {
+  searchParams: Promise<{ message?: string }>;
+};
+
+export default async function NotesPage({ searchParams }: NotesPageProps) {
   if (!hasSupabaseEnv()) {
     return <EnvSetupCard />;
   }
@@ -26,6 +30,7 @@ export default async function NotesPage() {
     .eq("user_id", user.id)
     .order("created_at", { ascending: false })
     .limit(20);
+  const { message } = await searchParams;
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-4xl px-6 py-12 md:py-20">
@@ -37,6 +42,11 @@ export default async function NotesPage() {
         </div>
       </header>
       <TopNav />
+      {message ? (
+        <div className="mb-4 rounded-lg bg-primary-50 p-4 text-sm text-primary-700">
+          {message}
+        </div>
+      ) : null}
 
       <Card className="mt-8 border-none" shadow="sm">
         <CardHeader className="px-6 pt-6 pb-0">

@@ -6,7 +6,11 @@ import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { EnvSetupCard } from "../components/env-setup-card";
 import { Card, CardHeader, CardBody, Button, Input, Chip } from "../components/nextui";
 
-export default async function HabitsPage() {
+type HabitsPageProps = {
+  searchParams: Promise<{ message?: string }>;
+};
+
+export default async function HabitsPage({ searchParams }: HabitsPageProps) {
   if (!hasSupabaseEnv()) {
     return <EnvSetupCard />;
   }
@@ -36,6 +40,7 @@ export default async function HabitsPage() {
 
   const habits = habitsResult.data ?? [];
   const checkedSet = new Set((logsResult.data ?? []).map((item) => item.habit_id));
+  const { message } = await searchParams;
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-4xl px-6 py-12 md:py-20">
@@ -47,6 +52,11 @@ export default async function HabitsPage() {
         </div>
       </header>
       <TopNav />
+      {message ? (
+        <div className="mb-4 rounded-lg bg-primary-50 p-4 text-sm text-primary-700">
+          {message}
+        </div>
+      ) : null}
 
       <Card className="mt-8 border-none" shadow="sm">
         <CardHeader className="px-6 pt-6 pb-0">

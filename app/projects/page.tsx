@@ -6,7 +6,11 @@ import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { EnvSetupCard } from "../components/env-setup-card";
 import { Card, CardHeader, CardBody, Button, Input, Chip, Progress } from "../components/nextui";
 
-export default async function ProjectsPage() {
+type ProjectsPageProps = {
+  searchParams: Promise<{ message?: string }>;
+};
+
+export default async function ProjectsPage({ searchParams }: ProjectsPageProps) {
   if (!hasSupabaseEnv()) {
     return <EnvSetupCard />;
   }
@@ -35,6 +39,7 @@ export default async function ProjectsPage() {
 
   const projects = projectsResult.data ?? [];
   const tasks = tasksResult.data ?? [];
+  const { message } = await searchParams;
 
   const statMap = tasks.reduce<Record<string, { total: number; done: number }>>((acc, task) => {
     if (!task.project_id) {
@@ -60,6 +65,11 @@ export default async function ProjectsPage() {
         </div>
       </header>
       <TopNav />
+      {message ? (
+        <div className="mb-4 rounded-lg bg-primary-50 p-4 text-sm text-primary-700">
+          {message}
+        </div>
+      ) : null}
 
       <Card className="mt-8 border-none" shadow="sm">
         <CardHeader className="px-6 pt-6 pb-0">
