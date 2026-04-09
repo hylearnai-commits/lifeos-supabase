@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { addHabit, checkInHabit } from "./actions";
+import { addHabit, checkInHabit, deleteHabit } from "./actions";
 import { createClient } from "@/lib/supabase/server";
 import { TopNav } from "../components/top-nav";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
@@ -93,21 +93,32 @@ export default async function HabitsPage() {
                       {habit.frequency === "daily" ? "每日" : "每周"} · 目标 {habit.target_value}
                     </p>
                   </div>
-                  {checked ? (
-                    <span className="rounded-md bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700">
-                      今日已打卡
-                    </span>
-                  ) : (
-                    <form action={checkInHabit}>
-                      <input type="hidden" name="habitId" value={habit.id} />
+                  <div className="flex items-center gap-2">
+                    {checked ? (
+                      <span className="rounded-md bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700">
+                        今日已打卡
+                      </span>
+                    ) : (
+                      <form action={checkInHabit}>
+                        <input type="hidden" name="habitId" value={habit.id} />
+                        <button
+                          type="submit"
+                          className="rounded-md border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:border-zinc-500 hover:text-zinc-900"
+                        >
+                          立即打卡
+                        </button>
+                      </form>
+                    )}
+                    <form action={deleteHabit}>
+                      <input type="hidden" name="id" value={habit.id} />
                       <button
                         type="submit"
-                        className="rounded-md border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:border-zinc-500 hover:text-zinc-900"
+                        className="rounded-md border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 transition hover:border-red-300 hover:text-red-700"
                       >
-                        立即打卡
+                        删除
                       </button>
                     </form>
-                  )}
+                  </div>
                 </li>
               );
             })

@@ -31,3 +31,25 @@ export async function addNote(formData: FormData) {
 
   revalidatePath("/notes");
 }
+
+export async function deleteNote(formData: FormData) {
+  const id = formData.get("id")?.toString();
+
+  if (!id) {
+    return;
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  await supabase.from("notes").delete().eq("id", id).eq("user_id", user.id);
+
+  revalidatePath("/notes");
+  revalidatePath("/");
+}

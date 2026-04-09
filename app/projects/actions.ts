@@ -29,6 +29,7 @@ export async function addProject(formData: FormData) {
   });
 
   revalidatePath("/projects");
+  revalidatePath("/");
 }
 
 export async function toggleProjectStatus(formData: FormData) {
@@ -57,4 +58,27 @@ export async function toggleProjectStatus(formData: FormData) {
     .eq("user_id", user.id);
 
   revalidatePath("/projects");
+  revalidatePath("/");
+}
+
+export async function deleteProject(formData: FormData) {
+  const id = formData.get("id")?.toString();
+
+  if (!id) {
+    return;
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  await supabase.from("projects").delete().eq("id", id).eq("user_id", user.id);
+
+  revalidatePath("/projects");
+  revalidatePath("/");
 }

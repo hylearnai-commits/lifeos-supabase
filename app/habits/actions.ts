@@ -63,3 +63,25 @@ export async function checkInHabit(formData: FormData) {
 
   revalidatePath("/habits");
 }
+
+export async function deleteHabit(formData: FormData) {
+  const id = formData.get("id")?.toString();
+
+  if (!id) {
+    return;
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  await supabase.from("habits").delete().eq("id", id).eq("user_id", user.id);
+
+  revalidatePath("/habits");
+  revalidatePath("/");
+}

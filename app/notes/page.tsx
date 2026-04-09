@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { addNote } from "./actions";
+import { addNote, deleteNote } from "./actions";
 import { createClient } from "@/lib/supabase/server";
 import { TopNav } from "../components/top-nav";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
@@ -73,11 +73,22 @@ export default async function NotesPage() {
           {notes?.length ? (
             notes.map((note) => (
               <li key={note.id} className="rounded-lg border border-zinc-200 px-3 py-3">
-                <div className="flex items-center gap-2">
-                  <p className="font-medium text-zinc-900">{note.title || "无标题"}</p>
-                  <span className="rounded bg-zinc-100 px-2 py-0.5 text-xs text-zinc-600">
-                    {note.type}
-                  </span>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <p className="font-medium text-zinc-900">{note.title || "无标题"}</p>
+                    <span className="rounded bg-zinc-100 px-2 py-0.5 text-xs text-zinc-600">
+                      {note.type}
+                    </span>
+                  </div>
+                  <form action={deleteNote}>
+                    <input type="hidden" name="id" value={note.id} />
+                    <button
+                      type="submit"
+                      className="rounded-md border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 transition hover:border-red-300 hover:text-red-700"
+                    >
+                      删除
+                    </button>
+                  </form>
                 </div>
                 <p className="mt-2 whitespace-pre-wrap text-sm text-zinc-700">{note.content}</p>
               </li>
