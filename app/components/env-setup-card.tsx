@@ -13,9 +13,8 @@ export function EnvSetupCard() {
         <CardBody>
           <ul className="space-y-2 rounded-lg bg-default-100 p-4 text-sm font-mono text-default-700">
             <li>NEXT_PUBLIC_SUPABASE_URL</li>
-            <li>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</li>
-            <li>SUPABASE_SECRET_KEY</li>
-            <li>NEXT_PUBLIC_SITE_URL</li>
+            <li>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY 或 NEXT_PUBLIC_SUPABASE_ANON_KEY</li>
+            <li>NEXT_PUBLIC_SITE_URL（可选）</li>
           </ul>
         </CardBody>
       </Card>

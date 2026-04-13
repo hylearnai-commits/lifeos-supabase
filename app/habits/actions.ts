@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createActionClient } from "@/lib/supabase/action-client";
 
 function mapHabitErrorMessage(raw: string) {
   if (raw.includes("Could not find the table 'public.habits'")) {
@@ -23,7 +23,7 @@ export async function addHabit(formData: FormData) {
     return;
   }
 
-  const supabase = await createClient();
+  const supabase = await createActionClient("/habits");
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -54,7 +54,7 @@ export async function checkInHabit(formData: FormData) {
     return;
   }
 
-  const supabase = await createClient();
+  const supabase = await createActionClient("/habits");
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -91,7 +91,7 @@ export async function deleteHabit(formData: FormData) {
     return;
   }
 
-  const supabase = await createClient();
+  const supabase = await createActionClient("/habits");
   const {
     data: { user },
   } = await supabase.auth.getUser();

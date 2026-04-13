@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 import { addNote, deleteNote } from "./actions";
 import { createClient } from "@/lib/supabase/server";
-import { TopNav } from "../components/top-nav";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { EnvSetupCard } from "../components/env-setup-card";
+import { DashboardShell } from "../components/dashboard-shell";
 import { Card, CardHeader, CardBody, Button, Input, Textarea, Chip } from "../components/nextui";
 
 type NotesPageProps = {
@@ -33,7 +33,8 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
   const { message } = await searchParams;
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-4xl px-6 py-12 md:py-20">
+    <DashboardShell currentPath="/notes">
+      <main className="min-h-screen w-full px-6 py-12 md:px-8 md:py-20 xl:px-10">
       <header className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div className="space-y-1">
           <p className="text-sm font-medium text-primary-500 tracking-wider uppercase">NOTES</p>
@@ -41,7 +42,6 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
           <p className="mt-2 text-sm text-default-500">随时记录灵感、复盘和会议纪要</p>
         </div>
       </header>
-      <TopNav />
       {message ? (
         <div className="mb-4 rounded-lg bg-primary-50 p-4 text-sm text-primary-700">
           {message}
@@ -169,6 +169,7 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
           </ul>
         </CardBody>
       </Card>
-    </main>
+      </main>
+    </DashboardShell>
   );
 }

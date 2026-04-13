@@ -15,8 +15,7 @@ npm install
 复制 `.env.example` 为 `.env.local`，并填入 Supabase 项目的值：
 
 - `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-- `SUPABASE_SECRET_KEY`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`（推荐）或 `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `NEXT_PUBLIC_SITE_URL`（可选，本地默认 `http://localhost:3000`）
 
 3. 启动开发环境

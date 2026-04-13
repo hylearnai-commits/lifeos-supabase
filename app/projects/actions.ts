@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createActionClient } from "@/lib/supabase/action-client";
 
 export async function addProject(formData: FormData) {
   const name = formData.get("name")?.toString().trim();
@@ -12,7 +12,7 @@ export async function addProject(formData: FormData) {
     return;
   }
 
-  const supabase = await createClient();
+  const supabase = await createActionClient("/projects");
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -45,7 +45,7 @@ export async function toggleProjectStatus(formData: FormData) {
     return;
   }
 
-  const supabase = await createClient();
+  const supabase = await createActionClient("/projects");
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -78,7 +78,7 @@ export async function deleteProject(formData: FormData) {
     return;
   }
 
-  const supabase = await createClient();
+  const supabase = await createActionClient("/projects");
   const {
     data: { user },
   } = await supabase.auth.getUser();

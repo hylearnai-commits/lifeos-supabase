@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 import { addHabit, checkInHabit, deleteHabit } from "./actions";
 import { createClient } from "@/lib/supabase/server";
-import { TopNav } from "../components/top-nav";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { EnvSetupCard } from "../components/env-setup-card";
+import { DashboardShell } from "../components/dashboard-shell";
 import { Card, CardHeader, CardBody, Button, Input, Chip } from "../components/nextui";
 
 type HabitsPageProps = {
@@ -43,7 +43,8 @@ export default async function HabitsPage({ searchParams }: HabitsPageProps) {
   const { message } = await searchParams;
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-4xl px-6 py-12 md:py-20">
+    <DashboardShell currentPath="/habits">
+      <main className="min-h-screen w-full px-6 py-12 md:px-8 md:py-20 xl:px-10">
       <header className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div className="space-y-1">
           <p className="text-sm font-medium text-primary-500 tracking-wider uppercase">HABITS</p>
@@ -51,7 +52,6 @@ export default async function HabitsPage({ searchParams }: HabitsPageProps) {
           <p className="mt-2 text-sm text-default-500">每天打卡，让小行动累积成长</p>
         </div>
       </header>
-      <TopNav />
       {message ? (
         <div className="mb-4 rounded-lg bg-primary-50 p-4 text-sm text-primary-700">
           {message}
@@ -201,6 +201,7 @@ export default async function HabitsPage({ searchParams }: HabitsPageProps) {
           </ul>
         </CardBody>
       </Card>
-    </main>
+      </main>
+    </DashboardShell>
   );
 }

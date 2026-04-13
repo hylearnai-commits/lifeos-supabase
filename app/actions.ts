@@ -2,10 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createActionClient } from "@/lib/supabase/action-client";
 
 export async function signOut() {
-  const supabase = await createClient();
+  const supabase = await createActionClient("/login");
   await supabase.auth.signOut();
   redirect("/login");
 }
@@ -22,7 +22,7 @@ export async function addTask(formData: FormData) {
     return;
   }
 
-  const supabase = await createClient();
+  const supabase = await createActionClient("/");
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -68,7 +68,7 @@ export async function toggleTask(formData: FormData) {
     return;
   }
 
-  const supabase = await createClient();
+  const supabase = await createActionClient("/");
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -96,7 +96,7 @@ export async function deleteTask(formData: FormData) {
     return;
   }
 
-  const supabase = await createClient();
+  const supabase = await createActionClient("/");
   const {
     data: { user },
   } = await supabase.auth.getUser();

@@ -7,7 +7,7 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { EnvSetupCard } from "../components/env-setup-card";
-import { Card, CardHeader, CardBody, Input, Button, Tabs, Tab } from "../components/nextui";
+import { Card, CardHeader, CardBody, Input, Button } from "../components/nextui";
 
 type LoginPageProps = {
   searchParams: Promise<{ message?: string }>;
@@ -45,9 +45,10 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             </div>
           )}
 
-          <Tabs fullWidth size="md" aria-label="Tabs form">
-            <Tab key="login" title="登录">
-              <form action={signInWithPassword} className="flex flex-col gap-4 pt-4">
+          <div className="space-y-5">
+            <section className="rounded-xl border border-default-200 p-4">
+              <h2 className="mb-3 text-sm font-semibold text-default-700">登录</h2>
+              <form action={signInWithPassword} className="flex flex-col gap-4">
                 <Input
                   isRequired
                   name="email"
@@ -64,17 +65,16 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                   placeholder="请输入密码"
                   variant="bordered"
                 />
-                <Button type="submit" color="primary" fullWidth className="mt-2 font-medium">
+                <Button type="submit" color="primary" fullWidth className="mt-1 font-medium">
                   登录
                 </Button>
               </form>
-            </Tab>
-            
-            <Tab key="sign-up" title="注册">
-              <form action={signUpWithPassword} className="flex flex-col gap-4 pt-4">
-                <p className="text-xs text-default-500 text-center mb-2">
-                  首次使用请先注册，注册后前往邮箱完成验证。
-                </p>
+            </section>
+
+            <section className="rounded-xl border border-default-200 p-4">
+              <h2 className="mb-2 text-sm font-semibold text-default-700">注册</h2>
+              <p className="mb-3 text-xs text-default-500">首次使用请先注册，注册后前往邮箱完成验证。</p>
+              <form action={signUpWithPassword} className="flex flex-col gap-4">
                 <Input
                   isRequired
                   name="email"
@@ -91,17 +91,16 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                   placeholder="至少 6 位密码"
                   variant="bordered"
                 />
-                <Button type="submit" color="secondary" fullWidth className="mt-2 font-medium">
+                <Button type="submit" color="secondary" fullWidth className="mt-1 font-medium">
                   注册新账号
                 </Button>
               </form>
-            </Tab>
+            </section>
 
-            <Tab key="magic-link" title="Magic Link">
-              <form action={signInWithMagicLink} className="flex flex-col gap-4 pt-4">
-                <p className="text-xs text-default-500 text-center mb-2">
-                  无需密码，通过邮箱验证链接快速登录。
-                </p>
+            <section className="rounded-xl border border-default-200 p-4">
+              <h2 className="mb-2 text-sm font-semibold text-default-700">Magic Link</h2>
+              <p className="mb-3 text-xs text-default-500">无需密码，通过邮箱验证链接快速登录。</p>
+              <form action={signInWithMagicLink} className="flex flex-col gap-4">
                 <Input
                   isRequired
                   name="email"
@@ -110,12 +109,12 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                   placeholder="you@example.com"
                   variant="bordered"
                 />
-                <Button type="submit" variant="flat" color="default" fullWidth className="mt-2 font-medium">
+                <Button type="submit" variant="flat" color="default" fullWidth className="mt-1 font-medium">
                   发送 Magic Link
                 </Button>
               </form>
-            </Tab>
-          </Tabs>
+            </section>
+          </div>
         </CardBody>
       </Card>
     </main>

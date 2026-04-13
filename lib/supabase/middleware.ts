@@ -1,14 +1,13 @@
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
+import { getSupabaseEnvConfig } from "./env";
 
 export async function updateSession(request: NextRequest) {
   const supabaseResponse = NextResponse.next({
     request,
   });
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabasePublishableKey =
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  const { supabaseUrl, supabasePublishableKey } = getSupabaseEnvConfig();
 
   if (!supabaseUrl || !supabasePublishableKey) {
     return supabaseResponse;

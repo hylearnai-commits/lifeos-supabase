@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createActionClient } from "@/lib/supabase/action-client";
 
 function getAuthErrorMessage(message: string) {
   const lower = message.toLowerCase();
@@ -54,7 +54,7 @@ function getEmailAndPassword(formData: FormData) {
 
 export async function signInWithPassword(formData: FormData) {
   const { email, password } = getEmailAndPassword(formData);
-  const supabase = await createClient();
+  const supabase = await createActionClient("/login");
 
   const { error } = await supabase.auth.signInWithPassword({
     email,
@@ -70,7 +70,7 @@ export async function signInWithPassword(formData: FormData) {
 
 export async function signUpWithPassword(formData: FormData) {
   const { email, password } = getEmailAndPassword(formData);
-  const supabase = await createClient();
+  const supabase = await createActionClient("/login");
   const origin = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
   const { data, error } = await supabase.auth.signUp({
@@ -103,7 +103,7 @@ export async function signInWithMagicLink(formData: FormData) {
     redirect(`/login?message=${encodeURIComponent("请填写你自己的真实邮箱地址")}`);
   }
 
-  const supabase = await createClient();
+  const supabase = await createActionClient("/login");
   const origin =
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -122,7 +122,7 @@ export async function signInWithMagicLink(formData: FormData) {
 }
 
 export async function signInWithGoogle() {
-  const supabase = await createClient();
+  const supabase = await createActionClient("/login");
   const origin = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
   const { data, error } = await supabase.auth.signInWithOAuth({

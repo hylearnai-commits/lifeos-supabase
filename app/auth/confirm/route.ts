@@ -1,6 +1,7 @@
 import { type EmailOtpType } from "@supabase/supabase-js";
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { getSupabaseEnvMessage, hasSupabaseEnv } from "@/lib/supabase/env";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -8,6 +9,12 @@ export async function GET(request: NextRequest) {
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
   const next = searchParams.get("next") ?? "/";
+
+  if (!hasSupabaseEnv()) {
+    return NextResponse.redirect(
+      new URL(`/login?message=${encodeURIComponent(getSupabaseEnvMessage())}`, request.url),
+    );
+  }
 
   const supabase = await createClient();
 

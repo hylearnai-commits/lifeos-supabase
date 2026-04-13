@@ -1,14 +1,13 @@
 "use client";
 
 import { createBrowserClient } from "@supabase/ssr";
+import { getSupabaseEnvConfig, getSupabaseEnvMessage } from "./env";
 
 export function createClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabasePublishableKey =
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  const { supabaseUrl, supabasePublishableKey } = getSupabaseEnvConfig();
 
   if (!supabaseUrl || !supabasePublishableKey) {
-    throw new Error("Supabase 环境变量未配置完整");
+    throw new Error(getSupabaseEnvMessage());
   }
 
   return createBrowserClient(supabaseUrl, supabasePublishableKey);

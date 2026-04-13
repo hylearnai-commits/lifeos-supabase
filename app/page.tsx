@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
-import { addTask, deleteTask, signOut, toggleTask } from "./actions";
+import { addTask, deleteTask, toggleTask } from "./actions";
 import { createClient } from "@/lib/supabase/server";
-import { TopNav } from "./components/top-nav";
 import { EnvSetupCard } from "./components/env-setup-card";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
+import { DashboardShell } from "./components/dashboard-shell";
 import { Card, CardBody, CardHeader, Button, Input, Chip } from "./components/nextui";
 
 type HomePageProps = {
@@ -54,19 +54,14 @@ export default async function Home({ searchParams }: HomePageProps) {
   const { message } = await searchParams;
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-4xl px-6 py-12 md:py-20">
+    <DashboardShell currentPath="/">
+      <main className="min-h-screen w-full px-6 py-12 md:px-8 md:py-20 xl:px-10">
       <header className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div className="space-y-1">
           <p className="text-sm font-medium text-primary-500 tracking-wider uppercase">WELCOME BACK</p>
           <h1 className="text-4xl font-extrabold tracking-tight text-foreground">LifeOS 今日总览</h1>
         </div>
-        <form action={signOut}>
-          <Button type="submit" variant="light" color="danger" className="font-medium">
-            退出登录
-          </Button>
-        </form>
       </header>
-      <TopNav />
       {message ? (
         <div className="mb-4 rounded-lg bg-danger-50 p-4 text-sm text-danger">
           {message}
@@ -269,6 +264,7 @@ export default async function Home({ searchParams }: HomePageProps) {
           </ul>
         </CardBody>
       </Card>
-    </main>
+      </main>
+    </DashboardShell>
   );
 }
