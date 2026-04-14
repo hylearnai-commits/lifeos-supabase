@@ -29,7 +29,7 @@ export function DashboardShell({
               key={item.href}
               href={item.href}
               aria-current={currentPath === item.href ? "page" : undefined}
-              className={`group flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
+              className={`group flex min-h-12 items-center gap-2 rounded-xl px-3 py-3.5 text-sm font-medium transition-all ${
                 currentPath === item.href
                   ? "bg-primary-500 text-white shadow-sm"
                   : "text-default-600 hover:bg-default-100 hover:text-foreground"
